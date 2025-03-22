@@ -6,7 +6,7 @@ pipeline {
         BACKEND_IMAGE = "viratpk18/backend-app:latest"
         FRONTEND_CONTAINER = "frontend-container"
         BACKEND_CONTAINER = "backend-container"
-        REGISTRY_CREDENTIALS = "docker-praveen"  // Jenkins credentials ID for Docker login
+        REGISTRY_CREDENTIALS = "docker_praveen"  // Jenkins credentials ID for Docker login
     }
 
     stages {
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 dir('backend') {
                     sh 'docker build -t $BACKEND_IMAGE .'
-                    withCredentials([usernamePassword(credentialsId: 'docker-praveen', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker_praveen', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                         sh 'docker push $BACKEND_IMAGE'
                     }
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh 'docker build -t $FRONTEND_IMAGE .'
-                    withCredentials([usernamePassword(credentialsId: 'docker-praveen', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker_praveen', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                         sh 'docker push $FRONTEND_IMAGE'
                     }
